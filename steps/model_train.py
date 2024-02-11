@@ -11,7 +11,7 @@ from .config import ModelNameConfig
 @step
 def train_model(
     X_train: pd.DataFrame,
-    x_test: pd.DataFrame,
+    X_test: pd.DataFrame,
     y_train: pd.DataFrame,
     y_test: pd.DataFrame,
     config: ModelNameConfig,
@@ -28,3 +28,4 @@ def train_model(
                 "Model {} not supported".format(config.model_name))
     except Exception as e:
         logging.error("Error in training model: {}".format(e))
+        raise e

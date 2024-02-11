@@ -15,11 +15,11 @@ class EvaluateModelParameters(BaseModel):
 
 @step
 def evaluate_model(
-    model: RegressorMixin, x_test: pd.DataFrame, y_test: pd.Series
+    model: RegressorMixin, X_test: pd.DataFrame, y_test: pd.DataFrame,
 ) -> Tuple[Annotated[float, "r2_score"], Annotated[float, "rmse"]]:
 
     try:
-        prediction = model.predict(x_test)
+        prediction = model.predict(X_test)
 
         mse_class = MSE()
         mse = mse_class.calculate_score(y_test, prediction)

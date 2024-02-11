@@ -27,8 +27,7 @@ class DataPreprocessStrategy(DataStrategy):
                     "order_estimated_delivery_date",
                     "order_purchase_timestamp",
                 ],
-                axis=1,
-            )
+                axis=1)
             data["product_weight_g"].fillna(
                 data["product_weight_g"].median(), inplace=True)
             data["product_length_cm"].fillna(
@@ -57,10 +56,10 @@ class DataDivideStrategy(DataStrategy):
         try:
             X = data.drop("review_score", axis=1)
             y = data["review_score"]
-            X_train, x_test, y_train, y_test = train_test_split(
+            X_train, X_test, y_train, y_test = train_test_split(
                 X, y, test_size=0.2, random_state=42
             )
-            return X_train, x_test, y_train, y_test
+            return X_train, X_test, y_train, y_test
         except Exception as e:
             logging.error(e)
             raise e

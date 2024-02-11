@@ -14,7 +14,7 @@ class Evaluation(ABC):
 
 class MSE(Evaluation):
 
-    def calculate_score(self, y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    def calculate_score(self, y_true: np.ndarray, y_pred: np.ndarray):
         try:
             logging.info("Entered the calculate_score method of the MSE class")
             mse = mean_squared_error(y_true, y_pred)
@@ -22,7 +22,7 @@ class MSE(Evaluation):
             return mse
         except Exception as e:
             logging.error(
-                "Exception occurred in calculate_score method of the MSE class. Exception message:  "
+                "Exception occurred in calculate_score method of the MSE class. Exception message:"
                 + str(e)
             )
             raise e
