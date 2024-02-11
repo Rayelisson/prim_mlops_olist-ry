@@ -10,85 +10,72 @@ from sklearn.linear_model import LinearRegression
 
 
 class Model(ABC):
-    """
-    Abstract base class for all models.
-    """
 
     @abstractmethod
-    def train(self, x_train, y_train):
-        """
-        Trains the model on the given data.
-
-        Args:
-            x_train: Training data
-            y_train: Target data
-        """
-        pass
-
-    @abstractmethod
-    def optimize(self, trial, x_train, y_train, x_test, y_test):
-        """
-        Optimizes the hyperparameters of the model.
-
-        Args:
-            trial: Optuna trial object
-            x_train: Training data
-            y_train: Target data
-            x_test: Testing data
-            y_test: Testing target
-        """
+    def train(self, X_train, y_train):
         pass
 
 
+"""
+    @abstractmethod
+    def optimize(self, trial, X_train, y_train, X_test, y_test):
+
+        pass
+"""
+
+"""
 class LightGBMModel(Model):
-    """
-    LightGBMModel that implements the Model interface.
-    """
 
-    def train(self, x_train, y_train, **kwargs):
+
+    def train(self, X_train, y_train, **kwargs):
         reg = LGBMRegressor(**kwargs)
-        reg.fit(x_train, y_train)
+        reg.fit(X_train, y_train)
         return reg
 
-    def optimize(self, trial, x_train, y_train, x_test, y_test):
+    def optimize(self, trial, X_train, y_train, X_test, y_test):
         n_estimators = trial.suggest_int("n_estimators", 1, 200)
         max_depth = trial.suggest_int("max_depth", 1, 20)
         learning_rate = trial.suggest_uniform("learning_rate", 0.01, 0.99)
-        reg = self.train(x_train, y_train, n_estimators=n_estimators,
+        reg = self.train(X_train, y_train, n_estimators=n_estimators,
                          learning_rate=learning_rate, max_depth=max_depth)
-        return reg.score(x_test, y_test)
+        return reg.score(X_test, y_test)
 
 
 class XGBoostModel(Model):
     """
-    XGBoostModel that implements the Model interface.
-    """
+# XGBoostModel that implements the Model interface.
 
-    def train(self, x_train, y_train, **kwargs):
+"""
+    def train(self, X_train, y_train, **kwargs):
         reg = xgb.XGBRegressor(**kwargs)
-        reg.fit(x_train, y_train)
+        reg.fit(X_train, y_train)
         return reg
 
-    def optimize(self, trial, x_train, y_train, x_test, y_test):
+    def optimize(self, trial, X_train, y_train, X_test, y_test):
         n_estimators = trial.suggest_int("n_estimators", 1, 200)
         max_depth = trial.suggest_int("max_depth", 1, 30)
         learning_rate = trial.suggest_loguniform("learning_rate", 1e-7, 10.0)
-        reg = self.train(x_train, y_train, n_estimators=n_estimators,
+        reg = self.train(X_train, y_train, n_estimators=n_estimators,
                          learning_rate=learning_rate, max_depth=max_depth)
-        return reg.score(x_test, y_test)
+        return reg.score(X_test, y_test)
+"""
 
 
 class LinearRegressionModel(Model):
-    """
-    LinearRegressionModel that implements the Model interface.
-    """
 
-    def train(self, x_train, y_train, **kwargs):
-        reg = LinearRegression(**kwargs)
-        reg.fit(x_train, y_train)
-        return reg
+    def train(self, X_train, y_train, **kwargs):
 
-    # For linear regression, there might not be hyperparameters that we want to tune, so we can simply return the score
-    def optimize(self, trial, x_train, y_train, x_test, y_test):
-        reg = self.train(x_train, y_train)
-        return reg.score(x_test, y_test)
+        try:
+            reg = LinearRegression(**kwargs)
+            reg.fit(X_train, y_train)
+            return reg
+        except Exception as e:
+            logging.error("")
+            raise e
+
+
+""" # For linear regression, there might not be hyperparameters that we want to tune, so we can simply return the score
+    def optimize(self, trial, X_train, y_train, X_test, y_test):
+        reg = self.train(X_train, y_train)
+        return reg.score(X_test, y_test)
+"""
