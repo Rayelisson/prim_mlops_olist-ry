@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from materializer.custom_materializer import cs_materializer
 from steps.clean_data import clean_df
-from steps.evaluation import evaluate_model
+from steps.evaluation import evaluation
 from steps.ingest_data import ingest_df
 from steps.model_train import train_model
 from zenml import pipeline, step
@@ -168,9 +168,9 @@ def continuous_deployment_pipeline(
 ):
 
     df = ingest_df()
-    x_train, x_test, y_train, y_test = clean_df(df)
-    model = train_model(x_train, x_test, y_train, y_test)
-    mse, rmse = evaluate_model(model, x_test, y_test)
+    X_train, X_test, y_train, y_test = clean_df(df)
+    model = train_model(X_train, X_test, y_train, y_test)
+    mse, rmse = evaluation(model, X_test, y_test)
     deployment_decision = deployment_trigger(accuracy=mse)
     mlflow_model_deployer_step(
         model=model,

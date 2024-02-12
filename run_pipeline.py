@@ -22,5 +22,3 @@ if __name__ == "__main__":
         "You can find your runs tracked within the `mlflow_example_pipeline`"
         "experiment. Here you'll also be able to compare the two runs.)"
     )
-
-    # train_pipeline(data_path="data/olist_customers_dataset.csv")
